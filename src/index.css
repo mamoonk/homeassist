@@ -203,7 +203,7 @@ html[data-theme='gamified'] .text-amber-500 {
   gap: 0.06em;
 }
 .flip-clock__seconds {
-  font-size: 0.62em;
+  font-size: 1em;
 }
 .flip-clock__ampm {
   font-size: 0.42em;
