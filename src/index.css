@@ -1,0 +1,192 @@
+@import '@fontsource/dseg14-classic/400.css';
+@import '@fontsource/dseg14-classic/700.css';
+@import '@fontsource/dseg7-classic/400.css';
+@import '@fontsource/dseg7-classic/700.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --glass-opacity: 0.5;
+  --glass-blur: 8px;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, sans-serif;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+.font-dseg14 {
+  font-family: 'DSEG14 Classic', monospace;
+}
+
+.font-dseg7 {
+  font-family: 'DSEG7 Classic', monospace;
+}
+
+/* Touch/TV target sizing */
+button,
+a[href],
+[role='button'] {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+@media (pointer: coarse) {
+  button,
+  a[href],
+  [role='button'] {
+    min-width: 48px;
+    min-height: 48px;
+  }
+}
+
+/* Glassmorphism panel, tuned per-theme below */
+.glass-panel {
+  background: rgba(30, 41, 59, var(--glass-opacity));
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+html[data-theme='light'] .glass-panel {
+  background: rgba(248, 250, 252, var(--glass-opacity));
+}
+
+html[data-theme='light'] {
+  color-scheme: light;
+}
+
+html[data-theme='light'] .slate-retint {
+  color: #1e293b;
+}
+
+html[data-theme='gamified'] .glass-panel {
+  background: linear-gradient(135deg, rgba(88, 28, 135, 0.55), rgba(49, 46, 129, 0.55));
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  box-shadow: 0 0 18px rgba(34, 211, 238, 0.25);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+html[data-theme='gamified'] input,
+html[data-theme='gamified'] select,
+html[data-theme='gamified'] textarea {
+  background: rgba(15, 10, 30, 0.6);
+  border-color: rgba(34, 211, 238, 0.4);
+  color: #e0f2fe;
+}
+
+html[data-theme='gamified'] .text-amber-400,
+html[data-theme='gamified'] .text-amber-500 {
+  color: #22d3ee;
+  text-shadow: 0 0 6px rgba(34, 211, 238, 0.6);
+}
+
+/* Smart Mirror: content wrapper sits above the mirrored video, and every
+   grid item switches to a white-tinted glass so it reads over any scene. */
+[data-smart-mirror='true'] .glass-panel {
+  background: rgba(255, 255, 255, var(--glass-opacity, 0.1)) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+.smart-mirror-video {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1);
+  z-index: 0;
+}
+
+.content-blur-wrapper {
+  position: relative;
+  z-index: 1;
+}
+
+/* Weather effects overlay */
+.weather-effects {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.rain-streak {
+  position: absolute;
+  top: -20%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(186, 230, 253, 0.6));
+  transform: rotate(-12deg);
+  animation-name: rain-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes rain-fall {
+  from {
+    transform: translateY(-10%) rotate(-12deg);
+  }
+  to {
+    transform: translateY(120%) rotate(-12deg);
+  }
+}
+
+.snow-flake {
+  position: absolute;
+  top: -10%;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.85);
+  animation-name: snow-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes snow-fall {
+  from {
+    transform: translate(0, -10%);
+  }
+  to {
+    transform: translate(var(--snow-drift, 0px), 120%);
+  }
+}
+
+.fog-layer {
+  position: absolute;
+  inset: -20%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.25), transparent 70%);
+  animation: fog-pulse 8s ease-in-out infinite;
+}
+
+@keyframes fog-pulse {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.thunder-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(15, 23, 42, 0.5), transparent 40%);
+}
+
+/* Container queries for grid item internals */
+.widget-container {
+  container-type: size;
+  container-name: widget;
+}
