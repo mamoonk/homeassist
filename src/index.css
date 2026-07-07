@@ -69,6 +69,47 @@ html[data-theme='light'] .slate-retint {
   color: #1e293b;
 }
 
+/* Light theme: re-tint the dark-theme text/surface utilities so everything
+   stays readable. Elements under .dark-surface (Finnhub terminal, map chips)
+   keep their dark styling in every theme and are excluded. */
+html[data-theme='light'] .text-white:not(.dark-surface, .dark-surface *) {
+  color: #0f172a;
+}
+html[data-theme='light'] .text-slate-100:not(.dark-surface, .dark-surface *),
+html[data-theme='light'] .text-slate-200:not(.dark-surface, .dark-surface *) {
+  color: #1e293b;
+}
+html[data-theme='light'] .text-slate-300:not(.dark-surface, .dark-surface *) {
+  color: #334155;
+}
+html[data-theme='light'] .text-slate-400:not(.dark-surface, .dark-surface *) {
+  color: #475569;
+}
+html[data-theme='light'] .text-slate-500:not(.dark-surface, .dark-surface *) {
+  color: #64748b;
+}
+html[data-theme='light'] .bg-slate-800:not(.dark-surface, .dark-surface *) {
+  background-color: #ffffff;
+}
+html[data-theme='light'] .border-white\/10:not(.dark-surface, .dark-surface *) {
+  border-color: rgba(15, 23, 42, 0.18);
+}
+html[data-theme='light'] .bg-white\/5:not(.dark-surface, .dark-surface *) {
+  background-color: rgba(15, 23, 42, 0.05);
+}
+html[data-theme='light'] .hover\:bg-white\/5:hover:not(.dark-surface, .dark-surface *) {
+  background-color: rgba(15, 23, 42, 0.07);
+}
+html[data-theme='light'] .hover\:bg-white\/10:hover:not(.dark-surface, .dark-surface *) {
+  background-color: rgba(15, 23, 42, 0.1);
+}
+html[data-theme='light'] .divide-white\/5:not(.dark-surface, .dark-surface *) > :not([hidden]) ~ :not([hidden]) {
+  border-color: rgba(15, 23, 42, 0.08);
+}
+html[data-theme='light'] .border-white\/5:not(.dark-surface, .dark-surface *) {
+  border-color: rgba(15, 23, 42, 0.08);
+}
+
 html[data-theme='gamified'] .glass-panel {
   background: linear-gradient(135deg, rgba(88, 28, 135, 0.55), rgba(49, 46, 129, 0.55));
   border: 1px solid rgba(34, 211, 238, 0.35);

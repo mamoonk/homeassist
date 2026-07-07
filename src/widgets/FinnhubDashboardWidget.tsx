@@ -115,7 +115,7 @@ export function FinnhubDashboardWidget() {
   const maxSectorValue = useMemo(() => Math.max(...MOCK_SECTORS.map((s) => s.value)), []);
 
   return (
-    <div className="widget-container flex h-full flex-col gap-2 overflow-hidden p-2" style={{ background: '#1a1a24' }}>
+    <div className="dark-surface widget-container flex h-full flex-col gap-2 overflow-hidden p-2" style={{ background: '#1a1a24' }}>
       <div className="flex items-center gap-2">
         <input
           readOnly

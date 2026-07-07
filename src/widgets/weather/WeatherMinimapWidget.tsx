@@ -139,11 +139,11 @@ export function WeatherMinimapWidget() {
       </div>
 
       {/* labels */}
-      <div className="pointer-events-none absolute left-2 top-2 rounded bg-slate-900/70 px-2 py-0.5 text-xs text-slate-100 backdrop-blur-sm">
+      <div className="dark-surface pointer-events-none absolute left-2 top-2 rounded bg-slate-900/70 px-2 py-0.5 text-xs text-slate-100 backdrop-blur-sm">
         {weather.locationName}
       </div>
       {frame && (
-        <div className="pointer-events-none absolute right-2 top-2 flex items-center gap-1.5 rounded bg-slate-900/70 px-2 py-0.5 text-[0.65rem] tabular-nums text-slate-200 backdrop-blur-sm">
+        <div className="dark-surface pointer-events-none absolute right-2 top-2 flex items-center gap-1.5 rounded bg-slate-900/70 px-2 py-0.5 text-[0.65rem] tabular-nums text-slate-200 backdrop-blur-sm">
           <span
             className="inline-block h-1.5 w-1.5 rounded-full bg-red-500"
             style={{ boxShadow: '0 0 4px rgba(239,68,68,0.9)' }}

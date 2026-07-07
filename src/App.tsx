@@ -89,7 +89,12 @@ export default function App() {
       return { background: 'linear-gradient(160deg, #1a0a2e 0%, #0f172a 40%, #0c0a1a 100%)' };
     }
 
-    return { backgroundColor: backgroundType === 'color' ? backgroundColor : backgroundColor };
+    // The untouched dark default swaps to the light default on the light theme.
+    if (effectiveTheme === 'light' && backgroundColor === '#0f172a') {
+      return { backgroundColor: '#f1f5f9' };
+    }
+
+    return { backgroundColor };
   }, [smartMirrorEnabled, backgroundType, backgroundImageUrl, backgroundColor, effectiveTheme]);
 
   const contentWrapperStyle = useMemo<React.CSSProperties>(() => {
