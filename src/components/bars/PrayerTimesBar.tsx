@@ -47,7 +47,9 @@ export function PrayerTimesBar() {
         return (
           <span
             key={prayer.name}
-            className={`whitespace-nowrap rounded-full border px-3 py-1 text-sm ${
+            // em-based sizing so the bar's font-size (prayerTimesScale) actually
+            // scales the chips — rem classes like text-sm ignore the parent.
+            className={`whitespace-nowrap rounded-full border px-[0.85em] py-[0.28em] text-[0.875em] ${
               isCurrent
                 ? 'border-amber-500/50 bg-amber-500/25 font-semibold text-amber-400'
                 : isNext
@@ -59,7 +61,7 @@ export function PrayerTimesBar() {
           </span>
         );
       })}
-      <span className="ml-2 whitespace-nowrap text-xs text-slate-400">{statusText}</span>
+      <span className="ml-2 whitespace-nowrap text-[0.75em] text-slate-400">{statusText}</span>
     </div>
   );
 }

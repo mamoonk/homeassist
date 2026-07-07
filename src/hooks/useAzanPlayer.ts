@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useSettingsStore } from '../store/settingsStore';
 import { getFivePrayers, getPrayerTimes } from '../services/azan';
-import { playAzan } from '../services/azanAudio';
+import { playAzan, playFallbackChime, primeAzanAudio } from '../services/azanAudio';
 
 const CHECK_INTERVAL_MS = 15_000;
 const FIRE_WINDOW_MS = 120_000;
@@ -18,6 +18,23 @@ export function useAzanPlayer(): void {
 
   const lastPlayedRef = useRef<Set<string>>(new Set());
   const isPlayingRef = useRef(false);
+
+  // Unlock audio on the first user interaction so scheduled playback isn't
+  // rejected by the browser's autoplay policy.
+  useEffect(() => {
+    if (!enabled || !playAtPrayerTime) return;
+    const prime = () => {
+      primeAzanAudio();
+      document.removeEventListener('pointerdown', prime);
+      document.removeEventListener('keydown', prime);
+    };
+    document.addEventListener('pointerdown', prime);
+    document.addEventListener('keydown', prime);
+    return () => {
+      document.removeEventListener('pointerdown', prime);
+      document.removeEventListener('keydown', prime);
+    };
+  }, [enabled, playAtPrayerTime]);
 
   useEffect(() => {
     if (!enabled || !playAtPrayerTime) return;
@@ -37,7 +54,13 @@ export function useAzanPlayer(): void {
           isPlayingRef.current = true;
           const choice = azanByPrayer[prayer.name] ?? azanChoice;
           playAzan(choice, volume)
-            .catch(() => undefined)
+            .catch((err: unknown) => {
+              console.warn(
+                `Azan playback failed for ${prayer.name} (azan${choice}.mp3):`,
+                err instanceof Error ? `${err.name}: ${err.message}` : err,
+              );
+              playFallbackChime(volume);
+            })
             .finally(() => {
               isPlayingRef.current = false;
             });

@@ -1,7 +1,9 @@
+import { useEffect, useState } from 'react';
 import { useSettingsStore } from '../../../store/settingsStore';
 import { SettingsCard, Field, Toggle, Slider, Select } from '../SettingsControls';
 import { CALCULATION_METHODS, getFivePrayers, getPrayerTimes } from '../../../services/azan';
-import { playAzan, stopAzan } from '../../../services/azanAudio';
+import { checkAzanFile, playAzan, playFallbackChime, stopAzan } from '../../../services/azanAudio';
+import type { AzanChoice } from '../../../services/azanAudio';
 import type { CalculationMethodName, PrayerName } from '../../../types';
 import dayjs from '../../../services/dayjsSetup';
 
@@ -20,9 +22,38 @@ export function AzanSection() {
 
   const prayers = getFivePrayers(getPrayerTimes(azanLatitude, azanLongitude, new Date(), azanCalculationMethod));
 
+  const [fileStatus, setFileStatus] = useState<Record<number, boolean>>({});
+  const [notice, setNotice] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all(([1, 2, 3, 4, 5] as AzanChoice[]).map(async (n) => [n, await checkAzanFile(n)] as const)).then(
+      (entries) => {
+        if (!cancelled) setFileStatus(Object.fromEntries(entries));
+      },
+    );
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   function setPrayerSound(prayer: PrayerName, choice: string) {
-    update({ azanByPrayer: { ...azanByPrayer, [prayer]: Number(choice) as 1 | 2 | 3 | 4 | 5 } });
+    update({ azanByPrayer: { ...azanByPrayer, [prayer]: Number(choice) as AzanChoice } });
   }
+
+  function handlePlay(choice: AzanChoice) {
+    setNotice(null);
+    playAzan(choice, azanVolume).catch((err: unknown) => {
+      if (err instanceof Error && err.name === 'NotAllowedError') {
+        setNotice('The browser blocked audio playback — click anywhere on the page first, then try again.');
+      } else {
+        setNotice(`azan${choice}.mp3 is missing from public/ (see AUDIO_README.md) — playing a fallback chime instead.`);
+        playFallbackChime(azanVolume);
+      }
+    });
+  }
+
+  const anyMissing = Object.values(fileStatus).some((ok) => !ok);
 
   return (
     <SettingsCard title="Azan">
@@ -70,6 +101,16 @@ export function AzanSection() {
         Place adhan audio files as <code>azan1.mp3</code> … <code>azan5.mp3</code> in the app's{' '}
         <code>public/</code> folder.
       </p>
+      {anyMissing && (
+        <p className="rounded border border-amber-500/30 bg-amber-500/10 px-2 py-1.5 text-xs text-amber-300">
+          Missing audio files:{' '}
+          {Object.entries(fileStatus)
+            .filter(([, ok]) => !ok)
+            .map(([n]) => `azan${n}.mp3`)
+            .join(', ')}
+          . A fallback chime plays at prayer time until they're added.
+        </p>
+      )}
 
       <Field label={`Volume (${Math.round(azanVolume * 100)}%)`}>
         <Slider
@@ -91,9 +132,23 @@ export function AzanSection() {
               onChange={(v) => setPrayerSound(prayer, v)}
               options={SOUND_OPTIONS}
             />
+            <span
+              className={`h-1.5 w-1.5 flex-shrink-0 rounded-full ${
+                fileStatus[azanByPrayer[prayer]] === undefined
+                  ? 'bg-slate-600'
+                  : fileStatus[azanByPrayer[prayer]]
+                    ? 'bg-emerald-400'
+                    : 'bg-amber-400'
+              }`}
+              title={
+                fileStatus[azanByPrayer[prayer]] === false
+                  ? `azan${azanByPrayer[prayer]}.mp3 missing`
+                  : `azan${azanByPrayer[prayer]}.mp3 found`
+              }
+            />
             <button
               type="button"
-              onClick={() => playAzan(azanByPrayer[prayer], azanVolume)}
+              onClick={() => handlePlay(azanByPrayer[prayer])}
               className="rounded bg-emerald-500/20 px-2 py-1 text-xs text-emerald-400 hover:bg-emerald-500/30"
             >
               Play
@@ -107,6 +162,7 @@ export function AzanSection() {
             </button>
           </div>
         ))}
+        {notice && <p className="text-xs text-amber-300">{notice}</p>}
       </div>
 
       <div className="rounded-lg border border-white/10 p-3 text-sm">
