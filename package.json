@@ -2,6 +2,31 @@
   "name": "gloss-smart-dashboard",
   "private": true,
   "version": "0.1.0",
+  "description": "Glassmorphic smart-mirror dashboard for wall displays, tablets, and TVs — weather, calendar with Hijri dates, stocks, Dexcom CGM, prayer times with adhan, and world clocks in a drag-and-drop widget grid.",
+  "author": "Mamoon Khan",
+  "license": "MIT",
+  "homepage": "https://github.com/mamoonk/homeassist#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mamoonk/homeassist.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mamoonk/homeassist/issues"
+  },
+  "keywords": [
+    "smart-mirror",
+    "dashboard",
+    "glassmorphism",
+    "weather",
+    "prayer-times",
+    "hijri-calendar",
+    "stocks",
+    "dexcom",
+    "pwa",
+    "react",
+    "vite",
+    "widgets"
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite",

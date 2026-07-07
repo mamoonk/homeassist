@@ -1,6 +1,7 @@
 {
   "name": "Gloss Smart Dashboard",
   "short_name": "Gloss",
+  "description": "Glassmorphic smart-mirror dashboard: weather, calendar, stocks, glucose, prayer times, and world clocks in a drag-and-drop widget grid.",
   "start_url": "/",
   "display": "standalone",
   "orientation": "any",
