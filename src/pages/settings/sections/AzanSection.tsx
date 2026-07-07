@@ -160,7 +160,9 @@ export function AzanSection() {
               type="button"
               onClick={() => handleToggle(prayer)}
               aria-label={playingPrayer === prayer ? `Stop ${prayer} azan preview` : `Play ${prayer} azan preview`}
-              className={`rounded px-3 py-1 text-sm leading-none transition ${
+              // min-h/w-0 defeats the global 44px touch-target rule so the
+              // button matches the sound <select> box height exactly.
+              className={`min-h-0 min-w-0 self-stretch rounded border border-transparent px-3 text-sm leading-none transition ${
                 playingPrayer === prayer
                   ? 'bg-rose-500/20 text-rose-400 hover:bg-rose-500/30'
                   : 'bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30'

@@ -1,5 +1,5 @@
 import { useSettingsStore } from '../../../store/settingsStore';
-import { SettingsCard, Field, Select, Toggle } from '../SettingsControls';
+import { SettingsCard, Field, Select, Slider, Toggle } from '../SettingsControls';
 import type { ClockDisplayType, DialStyle } from '../../../types';
 
 const DIAL_OPTIONS = [
@@ -14,6 +14,8 @@ export function ClockWidgetSection() {
   const displayType = useSettingsStore((s) => s.clockWidgetDisplayType);
   const showHourNumbers = useSettingsStore((s) => s.clockWidgetShowHourNumbers);
   const dialStyle = useSettingsStore((s) => s.clockWidgetDialStyle);
+  const digitalScale = useSettingsStore((s) => s.clockDigitalScale);
+  const analogDigitalScale = useSettingsStore((s) => s.clockAnalogDigitalScale);
   const update = useSettingsStore((s) => s.update);
 
   return (
@@ -26,6 +28,32 @@ export function ClockWidgetSection() {
             { value: 'digital', label: 'Digital' },
             { value: 'analog', label: 'Analog' },
           ]}
+        />
+      </Field>
+      <Field
+        label={`Digital clock scale (${digitalScale.toFixed(1)}×)`}
+        hint="Flip-clock size in digital mode — clock widget and world clocks bar."
+      >
+        <Slider
+          value={digitalScale}
+          min={0.5}
+          max={3}
+          step={0.1}
+          onChange={(v) => update({ clockDigitalScale: v })}
+          format={(v) => `${v.toFixed(1)}×`}
+        />
+      </Field>
+      <Field
+        label={`Digital time under analog dials (${analogDigitalScale.toFixed(1)}×)`}
+        hint="Flip-clock size below analog dials — clock widget and world clocks bar."
+      >
+        <Slider
+          value={analogDigitalScale}
+          min={0.5}
+          max={3}
+          step={0.1}
+          onChange={(v) => update({ clockAnalogDigitalScale: v })}
+          format={(v) => `${v.toFixed(1)}×`}
         />
       </Field>
       {displayType === 'analog' && (

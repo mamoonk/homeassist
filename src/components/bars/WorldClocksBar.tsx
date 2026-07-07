@@ -14,6 +14,8 @@ export function WorldClocksBar() {
   const displayType = useSettingsStore((s) => s.clockDisplayType);
   const showHourNumbers = useSettingsStore((s) => s.clockWidgetShowHourNumbers);
   const dialStyle = useSettingsStore((s) => s.clockWidgetDialStyle);
+  const digitalScale = useSettingsStore((s) => s.clockDigitalScale);
+  const analogDigitalScale = useSettingsStore((s) => s.clockAnalogDigitalScale);
 
   const override = useDataStore((s) => s.weatherLocationOverride);
   const toggleOverride = useDataStore((s) => s.toggleWeatherLocationOverride);
@@ -59,10 +61,10 @@ export function WorldClocksBar() {
                   dialStyle={dialStyle}
                   className="h-[3.5em] w-[3.5em]"
                 />
-                <FlipClock date={zonedNow} className="mt-[0.25em] text-[0.8em]" />
+                <FlipClock date={zonedNow} className="mt-[0.25em]" style={{ fontSize: `${0.8 * analogDigitalScale}em` }} />
               </div>
             ) : (
-              <FlipClock date={zonedNow} />
+              <FlipClock date={zonedNow} style={{ fontSize: `${digitalScale}em` }} />
             )}
           </button>
         );

@@ -8,6 +8,8 @@ export function ClockWidget() {
   const displayType = useSettingsStore((s) => s.clockWidgetDisplayType);
   const showHourNumbers = useSettingsStore((s) => s.clockWidgetShowHourNumbers);
   const dialStyle = useSettingsStore((s) => s.clockWidgetDialStyle);
+  const digitalScale = useSettingsStore((s) => s.clockDigitalScale);
+  const analogDigitalScale = useSettingsStore((s) => s.clockAnalogDigitalScale);
   const now = useNow(1000);
   const d = dayjs(now);
 
@@ -20,7 +22,7 @@ export function ClockWidget() {
           dialStyle={dialStyle}
           className="w-full min-h-0 flex-1 max-w-[min(64cqmin,100%)]"
         />
-        <FlipClock date={d} style={{ fontSize: 'min(2rem, 10.5cqw, 13cqh)' }} />
+        <FlipClock date={d} style={{ fontSize: `calc(min(2rem, 10.5cqw, 13cqh) * ${analogDigitalScale})` }} />
       </div>
     );
   }
@@ -28,7 +30,7 @@ export function ClockWidget() {
   return (
     <div
       className="relative flex h-full w-full flex-col items-center justify-center gap-[0.5em] p-2 text-center"
-      style={{ fontSize: 'min(2.5rem, 16cqmin)' }}
+      style={{ fontSize: `calc(min(2.5rem, 16cqmin) * ${digitalScale})` }}
     >
       <div className="flip-clock-glow" aria-hidden="true" />
       <FlipClock date={d} />

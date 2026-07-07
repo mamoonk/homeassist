@@ -199,6 +199,8 @@ export interface GlossSettings {
   clockWidgetDisplayType: ClockDisplayType;
   clockWidgetShowHourNumbers: boolean;
   clockWidgetDialStyle: DialStyle;
+  clockDigitalScale: number;
+  clockAnalogDigitalScale: number;
 
   stocksApiKey: string;
   stocksWatchlist: string[];
