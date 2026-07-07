@@ -59,7 +59,7 @@ export function WorldClocksBar() {
                   dialStyle={dialStyle}
                   className="h-[3.5em] w-[3.5em]"
                 />
-                <FlipClock date={zonedNow} className="mt-[0.2em] text-[0.5em]" />
+                <FlipClock date={zonedNow} className="mt-[0.25em] text-[0.8em]" />
               </div>
             ) : (
               <FlipClock date={zonedNow} />

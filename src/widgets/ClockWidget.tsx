@@ -13,14 +13,14 @@ export function ClockWidget() {
 
   if (displayType === 'analog') {
     return (
-      <div className="flex h-full w-full flex-col items-center justify-center gap-1 p-2">
+      <div className="flex h-full w-full flex-col items-center justify-center gap-[3%] p-2">
         <AnalogClockFace
           date={now}
           showHourNumbers={showHourNumbers}
           dialStyle={dialStyle}
-          className="w-full max-w-[min(72cqmin,100%)]"
+          className="w-full min-h-0 flex-1 max-w-[min(64cqmin,100%)]"
         />
-        <FlipClock date={d} className="mt-1" style={{ fontSize: 'min(0.9rem, 6cqmin)' }} />
+        <FlipClock date={d} style={{ fontSize: 'min(2rem, 10.5cqw, 13cqh)' }} />
       </div>
     );
   }
