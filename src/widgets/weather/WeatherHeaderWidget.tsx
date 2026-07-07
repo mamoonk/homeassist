@@ -41,7 +41,7 @@ export function WeatherHeaderWidget() {
               : 'linear-gradient(to top, rgba(15,23,42,0.35), transparent)',
         }}
       />
-      <WeatherEffectsOverlay condition={condition} />
+      <WeatherEffectsOverlay condition={condition} windSpeed={current.windSpeed} />
 
       <div className="relative z-10 flex items-center justify-between gap-2">
         <div className="min-w-0">
