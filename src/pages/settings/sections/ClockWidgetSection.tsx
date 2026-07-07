@@ -18,7 +18,11 @@ export function ClockWidgetSection() {
   const analogDigitalScale = useSettingsStore((s) => s.clockAnalogDigitalScale);
   const analogDialScale = useSettingsStore((s) => s.clockAnalogDialScale);
   const scaleLinked = useSettingsStore((s) => s.clockAnalogScaleLinked);
+  const worldClocksEnabled = useSettingsStore((s) => s.worldClocksEnabled);
+  const barDisplayType = useSettingsStore((s) => s.clockDisplayType);
   const update = useSettingsStore((s) => s.update);
+
+  const anyDigitalDisplay = displayType === 'digital' || (worldClocksEnabled && barDisplayType === 'digital');
 
   return (
     <SettingsCard title="Clock widget">
@@ -34,7 +38,11 @@ export function ClockWidgetSection() {
       </Field>
       <Field
         label={`Digital clock scale (${digitalScale.toFixed(1)}×)`}
-        hint="Flip-clock size in digital mode — clock widget and world clocks bar."
+        hint={
+          anyDigitalDisplay
+            ? 'Flip-clock size in digital mode — clock widget and world clocks bar.'
+            : '⚠ No effect right now: the clock widget (and world clocks bar) are set to Analog. Switch a Display to Digital to see this scale.'
+        }
       >
         <Slider
           value={digitalScale}
