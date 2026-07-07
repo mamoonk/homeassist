@@ -88,9 +88,10 @@ interface AnalogClockFaceProps {
   showHourNumbers?: boolean;
   dialStyle?: DialStyle;
   className?: string;
+  style?: React.CSSProperties;
 }
 
-export function AnalogClockFace({ date, showHourNumbers = true, dialStyle = 1, className }: AnalogClockFaceProps) {
+export function AnalogClockFace({ date, showHourNumbers = true, dialStyle = 1, className, style }: AnalogClockFaceProps) {
   const uid = useId().replace(/:/g, '');
   const theme = DIAL_THEMES[dialStyle];
 
@@ -119,7 +120,7 @@ export function AnalogClockFace({ date, showHourNumbers = true, dialStyle = 1, c
   const secondHandEnd = polar(18, secondAngle);
 
   return (
-    <svg viewBox="0 0 48 48" width="48" height="48" className={className} role="img" aria-label="Analog clock">
+    <svg viewBox="0 0 48 48" width="48" height="48" className={className} style={style} role="img" aria-label="Analog clock">
       <defs>
         <radialGradient id={`face-${uid}`} cx="50%" cy="45%" r="65%">
           <stop offset="0%" stopColor={theme.faceFrom} />

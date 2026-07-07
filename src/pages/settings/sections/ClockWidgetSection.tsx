@@ -16,6 +16,8 @@ export function ClockWidgetSection() {
   const dialStyle = useSettingsStore((s) => s.clockWidgetDialStyle);
   const digitalScale = useSettingsStore((s) => s.clockDigitalScale);
   const analogDigitalScale = useSettingsStore((s) => s.clockAnalogDigitalScale);
+  const analogDialScale = useSettingsStore((s) => s.clockAnalogDialScale);
+  const scaleLinked = useSettingsStore((s) => s.clockAnalogScaleLinked);
   const update = useSettingsStore((s) => s.update);
 
   return (
@@ -43,19 +45,61 @@ export function ClockWidgetSection() {
           format={(v) => `${v.toFixed(1)}×`}
         />
       </Field>
-      <Field
-        label={`Digital time under analog dials (${analogDigitalScale.toFixed(1)}×)`}
-        hint="Flip-clock size below analog dials — clock widget and world clocks bar."
-      >
-        <Slider
-          value={analogDigitalScale}
-          min={0.5}
-          max={3}
-          step={0.1}
-          onChange={(v) => update({ clockAnalogDigitalScale: v })}
-          format={(v) => `${v.toFixed(1)}×`}
-        />
-      </Field>
+      <Toggle
+        checked={scaleLinked}
+        onChange={(v) =>
+          update(
+            v
+              ? { clockAnalogScaleLinked: true, clockAnalogDigitalScale: analogDialScale }
+              : { clockAnalogScaleLinked: false },
+          )
+        }
+        label="Scale analog dial and its digital time together"
+      />
+      {scaleLinked ? (
+        <Field
+          label={`Analog clock scale (${analogDialScale.toFixed(1)}×)`}
+          hint="Scales the dial and the digital time below it together — clock widget and world clocks bar."
+        >
+          <Slider
+            value={analogDialScale}
+            min={0.5}
+            max={3}
+            step={0.1}
+            onChange={(v) => update({ clockAnalogDialScale: v, clockAnalogDigitalScale: v })}
+            format={(v) => `${v.toFixed(1)}×`}
+          />
+        </Field>
+      ) : (
+        <>
+          <Field
+            label={`Analog dial scale (${analogDialScale.toFixed(1)}×)`}
+            hint="Size of the analog dial — clock widget and world clocks bar."
+          >
+            <Slider
+              value={analogDialScale}
+              min={0.5}
+              max={3}
+              step={0.1}
+              onChange={(v) => update({ clockAnalogDialScale: v })}
+              format={(v) => `${v.toFixed(1)}×`}
+            />
+          </Field>
+          <Field
+            label={`Digital time under analog dials (${analogDigitalScale.toFixed(1)}×)`}
+            hint="Flip-clock size below analog dials — clock widget and world clocks bar."
+          >
+            <Slider
+              value={analogDigitalScale}
+              min={0.5}
+              max={3}
+              step={0.1}
+              onChange={(v) => update({ clockAnalogDigitalScale: v })}
+              format={(v) => `${v.toFixed(1)}×`}
+            />
+          </Field>
+        </>
+      )}
       {displayType === 'analog' && (
         <>
           <Field label="Dial style">

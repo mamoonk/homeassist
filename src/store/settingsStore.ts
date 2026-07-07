@@ -44,6 +44,8 @@ const DEFAULT_SETTINGS: GlossSettings = {
   clockWidgetDialStyle: 1,
   clockDigitalScale: 1,
   clockAnalogDigitalScale: 1,
+  clockAnalogDialScale: 1,
+  clockAnalogScaleLinked: false,
 
   // Fix #1: no hardcoded API key shipped as a default.
   stocksApiKey: '',

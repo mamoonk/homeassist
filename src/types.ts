@@ -201,6 +201,8 @@ export interface GlossSettings {
   clockWidgetDialStyle: DialStyle;
   clockDigitalScale: number;
   clockAnalogDigitalScale: number;
+  clockAnalogDialScale: number;
+  clockAnalogScaleLinked: boolean;
 
   stocksApiKey: string;
   stocksWatchlist: string[];
