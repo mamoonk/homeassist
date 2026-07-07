@@ -45,7 +45,7 @@ npm run dev        # → http://localhost:5173
 | 🍃 | **Air Quality** | Live US AQI ring gauge (Open-Meteo air-quality API) |
 | 👁️ | **Visibility · Pressure** | Correct units (miles / hPa) |
 | 🌙 | **Moon** | Illumination %, next full moon, sunrise/sunset |
-| 🕐 | **Clock** | Digital (DSEG segment font) or analog with **5 dial themes** |
+| 🕐 | **Clock** | Split-flap (Solari) digital display with 3D fold animation, or analog with **5 dial themes** |
 | 🗓️ | **Calendar** | Month grid with US & Islamic holidays + Hijri dates (Arabic numerals) |
 | 💹 | **Stocks** | Per-symbol cards, iOS-style watchlist, Bloomberg-ish 3-panel terminal |
 | 🩸 | **Dexcom CGM** | Glucose circle, trend arrows, target-band chart (mock mode included) |

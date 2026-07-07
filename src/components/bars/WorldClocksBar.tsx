@@ -3,6 +3,7 @@ import { useDataStore } from '../../store/dataStore';
 import { useNow } from '../../hooks/useNow';
 import { zoneLabel, TIMEZONE_LOCATIONS } from '../../services/geocoding';
 import { AnalogClockFace } from '../clock/AnalogClockFace';
+import { FlipClock } from '../clock/FlipClock';
 import dayjs from '../../services/dayjsSetup';
 
 export function WorldClocksBar() {
@@ -62,7 +63,7 @@ export function WorldClocksBar() {
                 <span className="font-dseg14 text-[0.6em] tabular-nums">{timeStr}</span>
               </div>
             ) : (
-              <span className="font-dseg14 font-bold tabular-nums">{timeStr}</span>
+              <FlipClock date={zonedNow} />
             )}
           </button>
         );

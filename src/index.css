@@ -190,3 +190,250 @@ html[data-theme='gamified'] .text-amber-500 {
   container-type: size;
   container-name: widget;
 }
+
+/* ===== Split-flap (Solari) clock ===== */
+.flip-clock {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.14em;
+  line-height: 1;
+}
+.flip-clock__group {
+  display: inline-flex;
+  gap: 0.06em;
+}
+.flip-clock__seconds {
+  font-size: 0.62em;
+}
+.flip-clock__ampm {
+  font-size: 0.42em;
+  margin-left: 0.2em;
+}
+
+.flip-digit {
+  position: relative;
+  display: inline-block;
+  width: 0.82em;
+  height: 1.16em;
+  perspective: 3.5em; /* gives the fold its depth */
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #f8fafc;
+  filter: drop-shadow(0 0.05em 0.1em rgba(0, 0, 0, 0.45));
+}
+
+/* Static halves + flipper faces share glyph positioning: each panel is
+   half-height with overflow hidden, and holds a full-height glyph pinned to
+   its top (top halves) or bottom (bottom halves). */
+.flip-half,
+.flip-face {
+  position: absolute;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+}
+.flip-half > span,
+.flip-face > span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1.16em;
+  line-height: 1.16em;
+  text-align: center;
+}
+.flip-half--top {
+  top: 0;
+  height: 50%;
+  border-radius: 0.1em 0.1em 0 0;
+  background: linear-gradient(180deg, #3f4f6b 0%, #2b3a54 100%);
+}
+.flip-half--top > span {
+  top: 0;
+}
+.flip-half--bottom {
+  bottom: 0;
+  height: 50%;
+  border-radius: 0 0 0.1em 0.1em;
+  background: linear-gradient(180deg, #253248 0%, #16203a 100%);
+}
+.flip-half--bottom > span {
+  bottom: 0;
+}
+
+/* Always-on sheen so the plates read as curved metal */
+.flip-half--top::after,
+.flip-half--bottom::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.flip-half--top::after {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.12));
+}
+.flip-half--bottom::after {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.24), rgba(255, 255, 255, 0.04));
+}
+
+/* The animated card: hinged at the horizontal centerline of the digit */
+.flip-flipper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  z-index: 3;
+  transform-origin: bottom center;
+  transform-style: preserve-3d;
+  animation: flip-fold 0.3s ease-in-out forwards;
+}
+.flip-face {
+  inset: 0;
+  backface-visibility: hidden;
+}
+.flip-face--front {
+  border-radius: 0.1em 0.1em 0 0;
+  background: linear-gradient(180deg, #3f4f6b 0%, #2b3a54 100%);
+}
+.flip-face--front > span {
+  top: 0;
+}
+.flip-face--back {
+  transform: rotateX(180deg);
+  border-radius: 0 0 0.1em 0.1em;
+  background: linear-gradient(180deg, #253248 0%, #16203a 100%);
+}
+.flip-face--back > span {
+  bottom: 0;
+}
+
+/* Falling card catches shadow; the freshly revealed top plate brightens */
+.flip-face--front::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  animation: flip-darken 0.3s ease-in-out forwards;
+}
+.is-flipping .flip-half--top::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.5);
+  animation: flip-reveal 0.3s ease-in-out forwards;
+}
+
+/* The physical split between the two plates, plus the side hinge pins */
+.flip-digit::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  margin-top: -0.5px;
+  background: rgba(2, 6, 23, 0.85);
+  z-index: 4;
+}
+.flip-digit::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 0.07em;
+  height: 0.22em;
+  margin-top: -0.11em;
+  background: #0b1220;
+  border-radius: 0 0.05em 0.05em 0;
+  z-index: 5;
+  box-shadow: 0.75em 0 0 #0b1220;
+}
+
+@keyframes flip-fold {
+  0% {
+    transform: rotateX(0deg);
+  }
+  100% {
+    transform: rotateX(-180deg);
+  }
+}
+@keyframes flip-darken {
+  0% {
+    background: rgba(0, 0, 0, 0);
+  }
+  100% {
+    background: rgba(0, 0, 0, 0.55);
+  }
+}
+@keyframes flip-reveal {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Separator dots between card groups */
+.flip-colon {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.26em;
+  padding: 0 0.04em;
+}
+.flip-colon > i {
+  width: 0.11em;
+  height: 0.11em;
+  border-radius: 9999px;
+  background: #f59e0b;
+  box-shadow: 0 0 0.25em rgba(245, 158, 11, 0.8);
+  animation: flip-colon-pulse 1s ease-in-out infinite;
+}
+@keyframes flip-colon-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* Soft ambient glow behind the widget clock */
+.flip-clock-glow {
+  position: absolute;
+  inset: 15%;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(245, 158, 11, 0.16), transparent 70%);
+  filter: blur(10px);
+}
+
+[data-theme='gamified'] .flip-digit {
+  color: #a5f3fc;
+}
+[data-theme='gamified'] .flip-half--top,
+[data-theme='gamified'] .flip-face--front {
+  background: linear-gradient(180deg, #3b2f63 0%, #241b47 100%);
+}
+[data-theme='gamified'] .flip-half--bottom,
+[data-theme='gamified'] .flip-face--back {
+  background: linear-gradient(180deg, #1d1640 0%, #120c2e 100%);
+}
+[data-theme='gamified'] .flip-colon > i {
+  background: #22d3ee;
+  box-shadow: 0 0 0.25em rgba(34, 211, 238, 0.8);
+}
+[data-theme='gamified'] .flip-clock-glow {
+  background: radial-gradient(ellipse at center, rgba(34, 211, 238, 0.2), transparent 70%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flip-flipper,
+  .flip-face--front::after,
+  .is-flipping .flip-half--top::before,
+  .flip-colon > i {
+    animation: none;
+  }
+}
