@@ -521,6 +521,21 @@ html[data-theme='gamified'] .text-amber-500 {
     transform: scale(1.15);
   }
 }
+@keyframes bolt-flash {
+  0%,
+  78%,
+  94%,
+  100% {
+    opacity: 0.3;
+  }
+  82%,
+  90% {
+    opacity: 1;
+  }
+  86% {
+    opacity: 0.45;
+  }
+}
 
 .anim-float {
   animation: float-bob 4.5s ease-in-out infinite;
@@ -540,7 +555,8 @@ html[data-theme='gamified'] .text-amber-500 {
   .anim-bubble,
   .anim-blink,
   .anim-drop,
-  .anim-twinkle {
+  .anim-twinkle,
+  .anim-bolt {
     animation: none !important;
   }
 }
