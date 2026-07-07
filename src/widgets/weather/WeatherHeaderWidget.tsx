@@ -20,7 +20,12 @@ export function WeatherHeaderWidget() {
         <div className="text-sm text-slate-300">{locationName}</div>
         <div className="flex items-center gap-3">
           <span className="text-3xl font-bold text-amber-400">{Math.round(current.temperature)}°</span>
-          <span style={{ fontSize: 40, lineHeight: 1 }}>{weatherEmoji(current.weatherCode, current.isDay)}</span>
+          <span
+            className="anim-float"
+            style={{ fontSize: 40, lineHeight: 1, display: 'inline-block', filter: 'drop-shadow(0 3px 5px rgba(0,0,0,0.45))' }}
+          >
+            {weatherEmoji(current.weatherCode, current.isDay)}
+          </span>
         </div>
         <div className="text-sm">{condition}</div>
         <div className="text-xs text-slate-400">Feels like {Math.round(current.apparentTemperature)}°</div>

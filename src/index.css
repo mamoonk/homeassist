@@ -437,3 +437,110 @@ html[data-theme='gamified'] .text-amber-500 {
     animation: none;
   }
 }
+
+/* ===== Widget graphics: 3D / dynamic helpers ===== */
+@keyframes float-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6%);
+  }
+}
+@keyframes cloud-drift {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(8%);
+  }
+}
+@keyframes cloud-drift-back {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-6%);
+  }
+}
+@keyframes sun-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes bubble-rise {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-3.4rem);
+    opacity: 0;
+  }
+}
+@keyframes eye-blink {
+  0%,
+  4%,
+  100% {
+    transform: scaleY(1);
+  }
+  2% {
+    transform: scaleY(0.08);
+  }
+}
+@keyframes drop-fall {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(14px);
+    opacity: 0;
+  }
+}
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+.anim-float {
+  animation: float-bob 4.5s ease-in-out infinite;
+}
+.gauge-needle {
+  transition: transform 0.9s cubic-bezier(0.34, 1.3, 0.5, 1);
+}
+.gauge-fill {
+  transition: height 0.9s ease-out, width 0.9s ease-out, stroke-dashoffset 1s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-float,
+  .anim-cloud-front,
+  .anim-cloud-back,
+  .anim-sun,
+  .anim-bubble,
+  .anim-blink,
+  .anim-drop,
+  .anim-twinkle {
+    animation: none !important;
+  }
+}
