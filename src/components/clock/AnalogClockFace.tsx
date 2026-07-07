@@ -138,10 +138,13 @@ export function AnalogClockFace({ date, showHourNumbers = true, dialStyle = 1, c
       <circle cx={center} cy={center} r={faceRadius} fill={`url(#face-${uid})`} />
 
       {minorTicks.map((i) => {
+        // Three tiers: quarters (12/3/6/9) longest and thickest, then hour
+        // ticks, then minute ticks.
         const angle = i * 6;
+        const isQuarter = i % 15 === 0;
         const isMajor = i % 5 === 0;
         const outer = polar(tickOuter, angle);
-        const inner = polar(isMajor ? 18 : 19.3, angle);
+        const inner = polar(isQuarter ? 17 : isMajor ? 18 : 19.3, angle);
         return (
           <line
             key={i}
@@ -150,7 +153,7 @@ export function AnalogClockFace({ date, showHourNumbers = true, dialStyle = 1, c
             x2={outer.x}
             y2={outer.y}
             stroke={isMajor ? theme.majorTick : theme.tick}
-            strokeWidth={isMajor ? 0.6 : 0.3}
+            strokeWidth={isQuarter ? 1.1 : isMajor ? 0.6 : 0.3}
           />
         );
       })}
