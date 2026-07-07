@@ -33,7 +33,6 @@ export function WorldClocksBar() {
         const label = zoneLabel(zoneId, cityDetails);
         const location = cityDetails[zoneId] ?? TIMEZONE_LOCATIONS[zoneId];
         const zonedNow = dayjs(now).tz(zoneId);
-        const timeStr = zonedNow.format('h:mm:ss A');
         const isSelected = override?.zoneId === zoneId;
 
         return (
@@ -60,7 +59,7 @@ export function WorldClocksBar() {
                   dialStyle={dialStyle}
                   className="h-[3.5em] w-[3.5em]"
                 />
-                <span className="font-dseg14 text-[0.6em] tabular-nums">{timeStr}</span>
+                <FlipClock date={zonedNow} className="mt-[0.2em] text-[0.5em]" />
               </div>
             ) : (
               <FlipClock date={zonedNow} />

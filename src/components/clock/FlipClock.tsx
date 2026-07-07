@@ -76,16 +76,17 @@ interface FlipClockProps {
   date: Dayjs;
   showSeconds?: boolean;
   className?: string;
+  style?: React.CSSProperties;
 }
 
-export function FlipClock({ date, showSeconds = true, className = '' }: FlipClockProps) {
+export function FlipClock({ date, showSeconds = true, className = '', style }: FlipClockProps) {
   const hh = date.format('hh');
   const mm = date.format('mm');
   const ss = date.format('ss');
   const ap = date.format('A');
 
   return (
-    <span className={`flip-clock ${className}`} role="img" aria-label={date.format('h:mm:ss A')}>
+    <span className={`flip-clock ${className}`} style={style} role="img" aria-label={date.format('h:mm:ss A')}>
       <span className="flip-clock__group">
         <FlipDigit target={hh[0]} charset={DIGITS} />
         <FlipDigit target={hh[1]} charset={DIGITS} />

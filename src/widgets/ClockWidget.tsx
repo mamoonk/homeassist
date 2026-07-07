@@ -20,7 +20,7 @@ export function ClockWidget() {
           dialStyle={dialStyle}
           className="w-full max-w-[min(72cqmin,100%)]"
         />
-        <span className="font-dseg14 tabular-nums">{d.format('h:mm:ss A')}</span>
+        <FlipClock date={d} className="mt-1" style={{ fontSize: 'min(0.9rem, 6cqmin)' }} />
       </div>
     );
   }

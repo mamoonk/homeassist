@@ -112,7 +112,7 @@ export function AnalogClockFace({ date, showHourNumbers = true, dialStyle = 1, c
   }
 
   const minorTicks = Array.from({ length: 60 }, (_, i) => i);
-  const majorTicks = Array.from({ length: 12 }, (_, i) => i * 5);
+  const hourNumerals = Array.from({ length: 12 }, (_, i) => i);
 
   const hourHandEnd = polar(11, hourAngle);
   const minuteHandEnd = polar(16, minuteAngle);
@@ -157,11 +157,11 @@ export function AnalogClockFace({ date, showHourNumbers = true, dialStyle = 1, c
       })}
 
       {showHourNumbers &&
-        majorTicks.map((angle, i) => {
-          const pos = polar(16.5, angle);
+        hourNumerals.map((i) => {
+          const pos = polar(16.5, i * 30);
           return (
             <text
-              key={angle}
+              key={i}
               x={pos.x}
               y={pos.y}
               fontSize={4}
