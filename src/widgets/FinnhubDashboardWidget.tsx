@@ -146,7 +146,7 @@ export function FinnhubDashboardWidget() {
               Stocks
             </button>
           </div>
-          <div className="flex-1 overflow-y-auto text-xs">
+          <div className="subtle-scrollbar flex-1 overflow-y-auto text-xs">
             {leftTab === 'sectors'
               ? MOCK_SECTORS.map((sector) => (
                   <div key={sector.code} className="flex items-center gap-2 py-1">
@@ -184,7 +184,7 @@ export function FinnhubDashboardWidget() {
         </div>
 
         {/* Center panel */}
-        <div className="flex w-[40%] flex-col gap-3 overflow-y-auto text-xs">
+        <div className="subtle-scrollbar flex w-[40%] flex-col gap-3 overflow-y-auto text-xs">
           <div>
             <div className="mb-1 flex items-center justify-between">
               <div className="flex items-center gap-1.5">
@@ -235,7 +235,7 @@ export function FinnhubDashboardWidget() {
         </div>
 
         {/* Right panel */}
-        <div className="flex w-[32%] flex-col gap-2 overflow-y-auto text-xs">
+        <div className="subtle-scrollbar flex w-[32%] flex-col gap-2 overflow-y-auto text-xs">
           <div>
             <div className="mb-1 font-semibold text-white">Market commentary</div>
             <p className="text-slate-400">

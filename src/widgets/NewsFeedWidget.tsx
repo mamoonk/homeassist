@@ -28,7 +28,7 @@ function ageLabel(unixSeconds: number): string {
 
 function HeadlineList({ items }: { items: Headline[] }) {
   return (
-    <ul className="flex-1 space-y-1.5 overflow-y-auto">
+    <ul className="subtle-scrollbar flex-1 space-y-1.5 overflow-y-auto">
       {items.map((n) => (
         <li key={n.id} className="border-b border-white/5 pb-1.5 last:border-0">
           <a

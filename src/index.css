@@ -601,6 +601,29 @@ html[data-theme='gamified'] .text-amber-500 {
   }
 }
 
+/* Near-invisible dark scrollbar for scrollable widget lists */
+.subtle-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.22) transparent;
+}
+.subtle-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.subtle-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.subtle-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.22);
+  border-radius: 9999px;
+}
+.subtle-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.45);
+}
+.subtle-scrollbar::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
 /* Mini map */
 .minimap-tiles {
   filter: invert(1) hue-rotate(180deg) brightness(1) contrast(0.85) saturate(0.6);
