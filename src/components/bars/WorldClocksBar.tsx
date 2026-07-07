@@ -53,7 +53,8 @@ export function WorldClocksBar() {
                 : 'border border-transparent hover:bg-white/5'
             } ${!location ? 'cursor-not-allowed opacity-50' : ''}`}
           >
-            <span className="text-xs uppercase tracking-wide text-slate-400">{label}</span>
+            {/* em-based so the bar's clock scale resizes the label too */}
+            <span className="text-[0.75em] font-bold uppercase tracking-wide text-white">{label}</span>
             {displayType === 'analog' ? (
               <div className="flex flex-col items-center">
                 <AnalogClockFace
