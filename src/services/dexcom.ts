@@ -65,6 +65,9 @@ function isoNoMillis(date: Date): string {
 
 async function getJson<T>(url: string, accessToken: string): Promise<T> {
   const res = await fetch(url, { headers: { Authorization: `Bearer ${accessToken}` } });
+  // Status checks first: a 401 can arrive with a non-JSON body (proxy/gateway
+  // pages) and must still surface as a re-auth prompt, not a proxy error.
+  if (res.status === 401) throw new Error('401');
   const contentType = res.headers.get('content-type') ?? '';
   if (!contentType.includes('application/json')) {
     throw new Error(
@@ -72,7 +75,6 @@ async function getJson<T>(url: string, accessToken: string): Promise<T> {
     );
   }
   if (!res.ok) {
-    if (res.status === 401) throw new Error('401');
     throw new Error(`Dexcom request failed: ${res.status}`);
   }
   return res.json() as Promise<T>;
@@ -120,12 +122,24 @@ export async function fetchDexcomData(base: DexcomApiBase, accessToken: string):
 
   return {
     dataRange: { start: dataRangeRes.egvs.start.systemTime, end: dataRangeRes.egvs.end.systemTime },
-    egvs: egvsRes.records,
+    // Dexcom v3 returns EGVs newest-first; consumers assume oldest-first
+    // (latest = last element, chart flows left to right).
+    egvs: [...egvsRes.records].sort((a, b) => a.systemTime.localeCompare(b.systemTime)),
     devices,
     alerts,
     calibrations,
     events,
   };
+}
+
+// Dexcom timestamps carry no timezone designator and are parsed as local
+// time by consumers — mock strings must therefore be rendered in LOCAL time,
+// not sliced from toISOString() (UTC), or readings shift by the UTC offset.
+function localIsoNoMillis(date: Date): string {
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(
+    date.getMinutes(),
+  )}:${pad(date.getSeconds())}`;
 }
 
 export function getMockDexcomData(): DexcomBundle {
@@ -138,22 +152,22 @@ export function getMockDexcomData(): DexcomBundle {
     { minutesAgo: 0, value: 112, trend: 'flat' },
   ];
   const egvs: DexcomEgv[] = values.map((v) => {
-    const time = isoNoMillis(new Date(now - v.minutesAgo * 60 * 1000));
+    const time = localIsoNoMillis(new Date(now - v.minutesAgo * 60 * 1000));
     return { systemTime: time, displayTime: time, value: v.value, trend: v.trend, unit: 'mg/dL' };
   });
 
-  const sevenDaysAgo = isoNoMillis(new Date(now - 7 * 24 * 60 * 60 * 1000));
-  const nowIso = isoNoMillis(new Date(now));
+  const sevenDaysAgo = localIsoNoMillis(new Date(now - 7 * 24 * 60 * 60 * 1000));
+  const nowIso = localIsoNoMillis(new Date(now));
 
   return {
     dataRange: { start: sevenDaysAgo, end: nowIso },
     egvs,
     devices: [{ transmitterId: 'MOCK01', transmitterGeneration: 'g7', displayDevice: 'iOS' }],
-    alerts: [{ alertName: 'urgentLowSoon', displayTime: isoNoMillis(new Date(now - 45 * 60 * 1000)) }],
-    calibrations: [{ systemTime: isoNoMillis(new Date(now - 6 * 60 * 60 * 1000)), value: 105 }],
+    alerts: [{ alertName: 'urgentLowSoon', displayTime: localIsoNoMillis(new Date(now - 45 * 60 * 1000)) }],
+    calibrations: [{ systemTime: localIsoNoMillis(new Date(now - 6 * 60 * 60 * 1000)), value: 105 }],
     events: [
-      { eventType: 'carbs', value: 45, unit: 'g', systemTime: isoNoMillis(new Date(now - 3 * 60 * 60 * 1000)) },
-      { eventType: 'insulin', value: 5, unit: 'u', systemTime: isoNoMillis(new Date(now - 3 * 60 * 60 * 1000)) },
+      { eventType: 'carbs', value: 45, unit: 'g', systemTime: localIsoNoMillis(new Date(now - 3 * 60 * 60 * 1000)) },
+      { eventType: 'insulin', value: 5, unit: 'u', systemTime: localIsoNoMillis(new Date(now - 3 * 60 * 60 * 1000)) },
     ],
   };
 }

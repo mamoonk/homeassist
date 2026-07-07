@@ -123,7 +123,7 @@ export function DexcomWidget() {
             <div className="text-[0.6rem] text-slate-400">mg/dL</div>
           </div>
         </div>
-        <div className="text-3xl">{latest ? TREND_ARROWS[latest.trend] : '—'}</div>
+        <div className="text-3xl">{latest ? (TREND_ARROWS[latest.trend] ?? '—') : '—'}</div>
       </div>
 
       <div className="flex gap-1 text-xs">
@@ -142,7 +142,8 @@ export function DexcomWidget() {
         <span className="ml-auto min-h-0 min-w-0 px-2 py-1 text-slate-500">⋯</span>
       </div>
 
-      <div style={{ height: 140 }}>
+      {/* em height so the chart follows the dexcomScale font-size */}
+      <div style={{ height: '8.75em' }}>
         {chartData.length === 0 ? (
           <div className="flex h-full items-center justify-center text-sm text-slate-500">
             No readings in selected range
