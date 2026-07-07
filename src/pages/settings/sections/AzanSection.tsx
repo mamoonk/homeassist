@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSettingsStore } from '../../../store/settingsStore';
 import { SettingsCard, Field, Toggle, Slider, Select } from '../SettingsControls';
 import { CALCULATION_METHODS, getFivePrayers, getPrayerTimes } from '../../../services/azan';
-import { checkAzanFile, playAzan, playFallbackChime, stopAzan } from '../../../services/azanAudio';
+import { checkAzanFile, playAzan, playFallbackChime, stopAllAzan } from '../../../services/azanAudio';
 import type { AzanChoice } from '../../../services/azanAudio';
 import type { CalculationMethodName, PrayerName } from '../../../types';
 import dayjs from '../../../services/dayjsSetup';
@@ -24,6 +24,7 @@ export function AzanSection() {
 
   const [fileStatus, setFileStatus] = useState<Record<number, boolean>>({});
   const [notice, setNotice] = useState<string | null>(null);
+  const [playingPrayer, setPlayingPrayer] = useState<PrayerName | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -41,9 +42,18 @@ export function AzanSection() {
     update({ azanByPrayer: { ...azanByPrayer, [prayer]: Number(choice) as AzanChoice } });
   }
 
-  function handlePlay(choice: AzanChoice) {
+  function handleToggle(prayer: PrayerName) {
+    const choice = azanByPrayer[prayer];
+    if (playingPrayer === prayer) {
+      stopAllAzan();
+      setPlayingPrayer(null);
+      return;
+    }
+    stopAllAzan();
     setNotice(null);
-    playAzan(choice, azanVolume).catch((err: unknown) => {
+    setPlayingPrayer(prayer);
+    playAzan(choice, azanVolume, () => setPlayingPrayer((p) => (p === prayer ? null : p))).catch((err: unknown) => {
+      setPlayingPrayer(null);
       if (err instanceof Error && err.name === 'NotAllowedError') {
         setNotice('The browser blocked audio playback — click anywhere on the page first, then try again.');
       } else {
@@ -148,17 +158,15 @@ export function AzanSection() {
             />
             <button
               type="button"
-              onClick={() => handlePlay(azanByPrayer[prayer])}
-              className="rounded bg-emerald-500/20 px-2 py-1 text-xs text-emerald-400 hover:bg-emerald-500/30"
+              onClick={() => handleToggle(prayer)}
+              aria-label={playingPrayer === prayer ? `Stop ${prayer} azan preview` : `Play ${prayer} azan preview`}
+              className={`rounded px-3 py-1 text-sm leading-none transition ${
+                playingPrayer === prayer
+                  ? 'bg-rose-500/20 text-rose-400 hover:bg-rose-500/30'
+                  : 'bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30'
+              }`}
             >
-              Play
-            </button>
-            <button
-              type="button"
-              onClick={() => stopAzan(azanByPrayer[prayer])}
-              className="rounded bg-white/5 px-2 py-1 text-xs text-slate-300 hover:bg-white/10"
-            >
-              Stop
+              {playingPrayer === prayer ? '■' : '▶'}
             </button>
           </div>
         ))}

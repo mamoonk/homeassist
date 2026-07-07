@@ -12,11 +12,12 @@ function getPlayer(choice: AzanChoice): HTMLAudioElement {
   return audio;
 }
 
-export async function playAzan(choice: AzanChoice, volume: number): Promise<void> {
+export async function playAzan(choice: AzanChoice, volume: number, onEnded?: () => void): Promise<void> {
   const audio = getPlayer(choice);
   audio.muted = false;
   audio.volume = volume;
   audio.currentTime = 0;
+  audio.onended = onEnded ? () => onEnded() : null;
   await audio.play();
 }
 
