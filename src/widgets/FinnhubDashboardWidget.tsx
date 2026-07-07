@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Line, LineChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 import { useSettingsStore } from '../store/settingsStore';
+import { useHourlyRefresh } from '../hooks/useHourlyRefresh';
 import { fetchCandles, fetchQuote, type IntradayResolution } from '../services/stocks';
 import type { StockCandlePoint, StockQuote } from '../types';
 import dayjs from '../services/dayjsSetup';
@@ -58,6 +59,7 @@ function rangeToParams(range: Range): { resolution: IntradayResolution; days: nu
 export function FinnhubDashboardWidget() {
   const apiKey = useSettingsStore((s) => s.stocksApiKey);
   const watchlist = useSettingsStore((s) => s.stocksWatchlist);
+  const refreshTick = useHourlyRefresh();
 
   const [leftTab, setLeftTab] = useState<'sectors' | 'stocks'>('sectors');
   const [expandedCard, setExpandedCard] = useState(0);
@@ -81,7 +83,7 @@ export function FinnhubDashboardWidget() {
     return () => {
       cancelled = true;
     };
-  }, [apiKey, watchlist]);
+  }, [apiKey, watchlist, refreshTick]);
 
   useEffect(() => {
     if (!apiKey) {
@@ -108,7 +110,7 @@ export function FinnhubDashboardWidget() {
     return () => {
       cancelled = true;
     };
-  }, [apiKey, ticker, range]);
+  }, [apiKey, ticker, range, refreshTick]);
 
   const maxSectorValue = useMemo(() => Math.max(...MOCK_SECTORS.map((s) => s.value)), []);
 

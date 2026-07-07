@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Area, AreaChart, ResponsiveContainer } from 'recharts';
 import { useSettingsStore } from '../store/settingsStore';
+import { useHourlyRefresh } from '../hooks/useHourlyRefresh';
 import { fetchCompanyName, fetchDailyCandles, fetchQuote } from '../services/stocks';
 import type { StockCandlePoint, StockQuote } from '../types';
 import dayjs from '../services/dayjsSetup';
@@ -17,6 +18,7 @@ export function StocksListWidget() {
   const apiKey = useSettingsStore((s) => s.stocksApiKey);
   const watchlist = useSettingsStore((s) => s.stocksWatchlist);
   const scale = useSettingsStore((s) => s.stocksScale);
+  const refreshTick = useHourlyRefresh();
   const [rows, setRows] = useState<Row[]>([]);
 
   useEffect(() => {
@@ -40,7 +42,7 @@ export function StocksListWidget() {
     return () => {
       cancelled = true;
     };
-  }, [apiKey, watchlist]);
+  }, [apiKey, watchlist, refreshTick]);
 
   return (
     <div className="widget-container flex h-full flex-col gap-2 p-3" style={{ fontSize: `${scale}rem` }}>

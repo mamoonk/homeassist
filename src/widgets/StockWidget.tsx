@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Area, AreaChart, ResponsiveContainer, Tooltip } from 'recharts';
 import { useSettingsStore } from '../store/settingsStore';
+import { useHourlyRefresh } from '../hooks/useHourlyRefresh';
 import { fetchDailyCandles, fetchQuote } from '../services/stocks';
 import type { StockCandlePoint, StockQuote } from '../types';
 import { WidgetCard } from '../components/grid/WidgetCard';
 
 export function StockWidget({ symbol }: { symbol: string }) {
   const apiKey = useSettingsStore((s) => s.stocksApiKey);
+  const refreshTick = useHourlyRefresh();
   const [quote, setQuote] = useState<StockQuote | null>(null);
   const [candles, setCandles] = useState<StockCandlePoint[]>([]);
   const [error, setError] = useState(false);
@@ -29,7 +31,7 @@ export function StockWidget({ symbol }: { symbol: string }) {
     return () => {
       cancelled = true;
     };
-  }, [symbol, apiKey]);
+  }, [symbol, apiKey, refreshTick]);
 
   if (!apiKey) {
     return (

@@ -64,6 +64,35 @@ export async function fetchDailyCandles(symbol: string, days: number, apiKey: st
   return data.t.map((t, i) => ({ time: t, close: data.c[i] }));
 }
 
+export interface MarketNewsItem {
+  id: number;
+  headline: string;
+  source: string;
+  datetime: number;
+  url: string;
+}
+
+interface NewsResponse {
+  id: number;
+  headline: string;
+  source: string;
+  datetime: number;
+  url: string;
+}
+
+export async function fetchMarketNews(apiKey: string, limit = 10): Promise<MarketNewsItem[]> {
+  const res = await fetch(`${BASE_URL}/news?category=general&token=${apiKey}`);
+  if (!res.ok) throw new Error(`News fetch failed: ${res.status}`);
+  const data: NewsResponse[] = await res.json();
+  return data.slice(0, limit).map((n) => ({
+    id: n.id,
+    headline: n.headline,
+    source: n.source,
+    datetime: n.datetime,
+    url: n.url,
+  }));
+}
+
 export type IntradayResolution = '5' | '15' | 'D';
 
 export async function fetchCandles(
