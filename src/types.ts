@@ -3,7 +3,7 @@ export type EffectiveTheme = 'light' | 'dark' | 'gamified';
 
 export type TemperatureUnit = 'fahrenheit' | 'celsius';
 export type ClockDisplayType = 'digital' | 'analog';
-export type DialStyle = 1 | 2 | 3 | 4 | 5;
+export type DialStyle = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18;
 export type BackgroundType = 'color' | 'image';
 export type OrientationLock = 'any' | 'portrait' | 'landscape';
 

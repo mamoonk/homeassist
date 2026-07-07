@@ -5,9 +5,22 @@ import type { ClockDisplayType, DialStyle } from '../../../types';
 const DIAL_OPTIONS = [
   { value: '1', label: '1 Classic' },
   { value: '2', label: '2 Minimal' },
-  { value: '3', label: '3 Navy' },
-  { value: '4', label: '4 Warm' },
-  { value: '5', label: '5 High contrast' },
+  { value: '3', label: '3 Navy & Gold' },
+  { value: '4', label: '4 Warm Brass' },
+  { value: '5', label: '5 High Contrast' },
+  { value: '6', label: '6 Neon Cyber ✨' },
+  { value: '7', label: '7 Emerald' },
+  { value: '8', label: '8 Rose Gold' },
+  { value: '9', label: '9 Midnight OLED ✨' },
+  { value: '10', label: '10 Sunset Glow ✨' },
+  { value: '11', label: '11 Deep Ocean' },
+  { value: '12', label: '12 Retro Diner' },
+  { value: '13', label: '13 Museum Dot (Movado-inspired)' },
+  { value: '14', label: '14 Diver (Rolex-inspired)' },
+  { value: '15', label: '15 Seamaster (Omega-inspired)' },
+  { value: '16', label: '16 Ceramic (Rado-inspired)' },
+  { value: '17', label: '17 Dress Silver (Patek-inspired)' },
+  { value: '18', label: '18 Racing (TAG-inspired)' },
 ];
 
 export function ClockWidgetSection() {
