@@ -90,7 +90,7 @@ export function CalendarWidget() {
                 <span>{date.getDate()}</span>
                 {hijri && <span className="text-slate-500">{toArabicDigits(hijri.day)}</span>}
               </div>
-              <div className="flex-1 overflow-y-auto">
+              <div className="subtle-scrollbar flex-1 overflow-y-auto">
                 {titles.map((title, i) => (
                   <div key={i} className="truncate text-sky-300">
                     {title}

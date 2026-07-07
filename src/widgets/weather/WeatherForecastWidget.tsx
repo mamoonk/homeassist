@@ -11,7 +11,7 @@ export function WeatherForecastWidget() {
 
   return (
     <WidgetCard title="7-day forecast">
-      <div className="flex h-full gap-2 overflow-x-auto" style={{ fontSize: 'clamp(0.5rem, 4cqw, 1.5rem)' }}>
+      <div className="subtle-scrollbar flex h-full gap-2 overflow-x-auto" style={{ fontSize: 'clamp(0.5rem, 4cqw, 1.5rem)' }}>
         {weather.daily.slice(0, 7).map((day) => (
           <div
             key={day.date}

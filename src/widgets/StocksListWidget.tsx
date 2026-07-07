@@ -61,7 +61,7 @@ export function StocksListWidget() {
           Configure API key in Settings
         </div>
       ) : (
-        <div className="flex flex-1 flex-col divide-y divide-white/5 overflow-y-auto">
+        <div className="subtle-scrollbar flex flex-1 flex-col divide-y divide-white/5 overflow-y-auto">
           {rows.map((row) => {
             const isUp = (row.quote?.change ?? 0) >= 0;
             const color = isUp ? '#34d399' : '#f87171';
