@@ -1,11 +1,14 @@
 import { useSettingsStore } from '../store/settingsStore';
+import { useAzanPlaybackStore } from '../store/azanPlaybackStore';
 import { useNow } from '../hooks/useNow';
 import { AnalogClockFace } from '../components/clock/AnalogClockFace';
 import { FlipClock } from '../components/clock/FlipClock';
+import { KaabaModel } from '../components/clock/KaabaModel';
 import dayjs from '../services/dayjsSetup';
 
 export function ClockWidget() {
   const displayType = useSettingsStore((s) => s.clockWidgetDisplayType);
+  const isAzanPlaying = useAzanPlaybackStore((s) => s.isAzanPlaying);
   const showHourNumbers = useSettingsStore((s) => s.clockWidgetShowHourNumbers);
   const dialStyle = useSettingsStore((s) => s.clockWidgetDialStyle);
   const digitalScale = useSettingsStore((s) => s.clockDigitalScale);
@@ -13,6 +16,15 @@ export function ClockWidget() {
   const analogDialScale = useSettingsStore((s) => s.clockAnalogDialScale);
   const now = useNow(1000);
   const d = dayjs(now);
+
+  // During the azan the clock steps aside for a rotating Kaaba model.
+  if (isAzanPlaying) {
+    return (
+      <div className="relative h-full w-full">
+        <KaabaModel />
+      </div>
+    );
+  }
 
   if (displayType === 'analog') {
     return (

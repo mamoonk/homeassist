@@ -1,6 +1,12 @@
+import { useAzanPlaybackStore } from '../store/azanPlaybackStore';
+
 export type AzanChoice = 1 | 2 | 3 | 4 | 5;
 
 const players = new Map<AzanChoice, HTMLAudioElement>();
+
+function setAzanPlaying(playing: boolean): void {
+  useAzanPlaybackStore.getState().setAzanPlaying(playing);
+}
 
 function getPlayer(choice: AzanChoice): HTMLAudioElement {
   let audio = players.get(choice);
@@ -17,8 +23,12 @@ export async function playAzan(choice: AzanChoice, volume: number, onEnded?: () 
   audio.muted = false;
   audio.volume = volume;
   audio.currentTime = 0;
-  audio.onended = onEnded ? () => onEnded() : null;
+  audio.onended = () => {
+    setAzanPlaying(false);
+    onEnded?.();
+  };
   await audio.play();
+  setAzanPlaying(true);
 }
 
 export function stopAzan(choice: AzanChoice): void {
@@ -27,6 +37,7 @@ export function stopAzan(choice: AzanChoice): void {
     audio.pause();
     audio.currentTime = 0;
   }
+  setAzanPlaying(false);
 }
 
 export function stopAllAzan(): void {
@@ -34,6 +45,7 @@ export function stopAllAzan(): void {
     audio.pause();
     audio.currentTime = 0;
   });
+  setAzanPlaying(false);
 }
 
 // Browsers block audio until the user has interacted with the page. Called

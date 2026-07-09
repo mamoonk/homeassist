@@ -37,6 +37,7 @@
     "@fontsource/dseg14-classic": "^5.2.5",
     "@fontsource/dseg7-classic": "^5.2.5",
     "@tabby_ai/hijri-converter": "^1.0.5",
+    "@types/three": "^0.185.1",
     "adhan": "^4.4.3",
     "dayjs": "^1.11.19",
     "react": "^19.2.4",
@@ -44,6 +45,7 @@
     "react-grid-layout": "^2.2.2",
     "react-router-dom": "^7.13.0",
     "recharts": "^3.7.0",
+    "three": "^0.185.1",
     "zustand": "^5.0.11"
   },
   "devDependencies": {
