@@ -1,6 +1,7 @@
 import { useSettingsStore } from '../store/settingsStore';
 import { useAzanPlaybackStore } from '../store/azanPlaybackStore';
 import { useNow } from '../hooks/useNow';
+import { useWeatherContext } from '../hooks/WeatherContext';
 import { AnalogClockFace } from '../components/clock/AnalogClockFace';
 import { FlipClock } from '../components/clock/FlipClock';
 import { KaabaModel } from '../components/clock/KaabaModel';
@@ -14,8 +15,16 @@ export function ClockWidget() {
   const digitalScale = useSettingsStore((s) => s.clockDigitalScale);
   const analogDigitalScale = useSettingsStore((s) => s.clockAnalogDigitalScale);
   const analogDialScale = useSettingsStore((s) => s.clockAnalogDialScale);
+  const { weather } = useWeatherContext();
   const now = useNow(1000);
-  const d = dayjs(now);
+  // Show the weather location's local time (the display machine's OS zone
+  // may differ); fall back to machine time until weather has loaded.
+  const d = weather?.timezone ? dayjs(now).tz(weather.timezone) : dayjs(now);
+  // AnalogClockFace reads local getHours() from a native Date, so rebuild
+  // one carrying the zone's wall-clock fields.
+  const analogDate = weather?.timezone
+    ? new Date(d.year(), d.month(), d.date(), d.hour(), d.minute(), d.second())
+    : now;
 
   // During the azan the clock steps aside for a rotating Kaaba model.
   if (isAzanPlaying) {
@@ -30,7 +39,7 @@ export function ClockWidget() {
     return (
       <div className="flex h-full w-full flex-col items-center justify-center gap-[3%] p-2">
         <AnalogClockFace
-          date={now}
+          date={analogDate}
           showHourNumbers={showHourNumbers}
           dialStyle={dialStyle}
           className="w-full min-h-0 flex-1"

@@ -113,6 +113,8 @@ export interface WeatherData {
   locationName: string;
   latitude: number;
   longitude: number;
+  /** IANA timezone of the weather location, resolved by Open-Meteo. */
+  timezone: string;
   current: WeatherCurrent;
   hourly: WeatherHourly[];
   daily: WeatherDaily[];

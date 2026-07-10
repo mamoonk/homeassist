@@ -39,6 +39,7 @@ export function weatherCodeLabel(code: number): string {
 }
 
 interface OpenMeteoResponse {
+  timezone: string;
   current: {
     temperature_2m: number;
     relative_humidity_2m: number;
@@ -133,6 +134,7 @@ export async function fetchWeather(
     locationName,
     latitude,
     longitude,
+    timezone: data.timezone,
     current,
     hourly,
     daily,
