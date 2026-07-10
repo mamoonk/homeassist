@@ -97,7 +97,9 @@ export function WeatherMinimapWidget() {
             src={`${radarHost}${f.path}/${TILE}/${ZOOM}/${t.tx}/${t.ty}/2/1_1.png`}
             alt=""
             draggable={false}
-            className="absolute select-none"
+            // max-w-none: Tailwind preflight's img{max-width:100%} collapses
+            // tiles to 0px inside the zero-width positioning anchor.
+            className="absolute max-w-none select-none"
             style={{ left: t.left, top: t.top, width: TILE, height: TILE, opacity }}
           />
         ),
@@ -115,7 +117,7 @@ export function WeatherMinimapWidget() {
                 src={`https://tile.openstreetmap.org/${ZOOM}/${t.tx}/${t.ty}.png`}
                 alt=""
                 draggable={false}
-                className="absolute select-none"
+                className="absolute max-w-none select-none"
                 style={{ left: t.left, top: t.top, width: TILE, height: TILE }}
               />
             ),
