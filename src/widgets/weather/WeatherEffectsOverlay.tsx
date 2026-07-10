@@ -1,3 +1,5 @@
+import { useSettingsStore } from '../../store/settingsStore';
+
 interface Layers {
   rain: 'drizzle' | 'rain' | null;
   snow: 'snow' | 'heavy_snow' | null;
@@ -41,7 +43,11 @@ const SNOW_BANDS = [
 ];
 
 export function WeatherEffectsOverlay({ condition, windSpeed = 0 }: { condition: string; windSpeed?: number }) {
+  const lowPowerMode = useSettingsStore((s) => s.lowPowerMode);
   const layers = resolveLayers(condition, windSpeed);
+
+  // Up to ~140 animated particles — skip the DOM entirely in low power mode.
+  if (lowPowerMode) return null;
   const { rain, snow, fog, clouds, thunder, wind, windLevel } = layers;
 
   if (!rain && !snow && !fog && !clouds && !wind) return null;

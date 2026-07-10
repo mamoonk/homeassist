@@ -8,7 +8,8 @@ export function AzanWidget() {
   const latitude = useSettingsStore((s) => s.azanLatitude);
   const longitude = useSettingsStore((s) => s.azanLongitude);
   const method = useSettingsStore((s) => s.azanCalculationMethod);
-  const now = useNow(1000);
+  // Minute-level display — no need for a per-second re-render.
+  const now = useNow(30_000);
 
   const prayers = getFivePrayers(getPrayerTimes(latitude, longitude, now, method));
   const current = getCurrentPrayer(prayers, now);

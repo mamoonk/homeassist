@@ -52,6 +52,7 @@ export default function App() {
   const backgroundImageUrl = useSettingsStore((s) => s.backgroundImageUrl);
   const smartMirrorEnabled = useSettingsStore((s) => s.smartMirrorEnabled);
   const smartMirrorDeviceId = useSettingsStore((s) => s.smartMirrorDeviceId);
+  const lowPowerMode = useSettingsStore((s) => s.lowPowerMode);
 
   const effectiveTheme = useEffectiveTheme(theme);
   const weatherState = useWeather(2 * 60 * 60 * 1000);
@@ -60,6 +61,8 @@ export default function App() {
   useEffect(() => {
     const html = document.documentElement;
     html.setAttribute('data-theme', effectiveTheme);
+    if (lowPowerMode) html.setAttribute('data-low-power', 'true');
+    else html.removeAttribute('data-low-power');
     html.style.setProperty('--glass-opacity', String(glassOpacity));
     html.style.setProperty('--glass-blur', `${glassBlur}px`);
 
@@ -70,7 +73,7 @@ export default function App() {
       document.head.appendChild(meta);
     }
     meta.setAttribute('content', THEME_COLORS[effectiveTheme]);
-  }, [effectiveTheme, glassOpacity, glassBlur]);
+  }, [effectiveTheme, glassOpacity, glassBlur, lowPowerMode]);
 
   const backgroundStyle = useMemo<React.CSSProperties>(() => {
     if (smartMirrorEnabled) return { background: 'transparent' };
@@ -98,13 +101,15 @@ export default function App() {
   }, [smartMirrorEnabled, backgroundType, backgroundImageUrl, backgroundColor, effectiveTheme]);
 
   const contentWrapperStyle = useMemo<React.CSSProperties>(() => {
-    if (smartMirrorEnabled || contentBlur === 0) return {};
+    // Full-viewport backdrop-filter forces a whole-screen re-blur on every
+    // animation frame — never worth it on weak hardware.
+    if (smartMirrorEnabled || contentBlur === 0 || lowPowerMode) return {};
     return {
       backdropFilter: `blur(${contentBlur}px)`,
       WebkitBackdropFilter: `blur(${contentBlur}px)`,
       backgroundColor: 'rgba(15, 23, 42, 0.15)',
     };
-  }, [smartMirrorEnabled, contentBlur]);
+  }, [smartMirrorEnabled, contentBlur, lowPowerMode]);
 
   return (
     <div

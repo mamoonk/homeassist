@@ -171,6 +171,8 @@ export interface GlossSettings {
   glassOpacity: number;
   glassBlur: 0 | 4 | 8 | 12;
   contentBlur: number;
+  /** Disables backdrop blur and decorative animations for weak hardware. */
+  lowPowerMode: boolean;
 
   smartMirrorEnabled: boolean;
   smartMirrorDeviceId: string;

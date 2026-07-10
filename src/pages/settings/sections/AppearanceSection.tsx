@@ -1,5 +1,5 @@
 import { useSettingsStore } from '../../../store/settingsStore';
-import { SettingsCard, Field, Slider, Select } from '../SettingsControls';
+import { SettingsCard, Field, Slider, Select, Toggle } from '../SettingsControls';
 import type { OrientationLock, Theme } from '../../../types';
 
 const THEME_OPTIONS: Array<{ value: Theme; label: string }> = [
@@ -19,6 +19,7 @@ export function AppearanceSection() {
   const theme = useSettingsStore((s) => s.theme);
   const fontScale = useSettingsStore((s) => s.fontScale);
   const orientationLock = useSettingsStore((s) => s.orientationLock);
+  const lowPowerMode = useSettingsStore((s) => s.lowPowerMode);
   const update = useSettingsStore((s) => s.update);
 
   return (
@@ -43,6 +44,11 @@ export function AppearanceSection() {
           options={ORIENTATION_OPTIONS}
         />
       </Field>
+      <Toggle
+        checked={lowPowerMode}
+        onChange={(v) => update({ lowPowerMode: v })}
+        label="Low power mode (disables blur & ambient animations — for weak hardware)"
+      />
     </SettingsCard>
   );
 }

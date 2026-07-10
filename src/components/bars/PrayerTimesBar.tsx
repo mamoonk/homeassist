@@ -17,7 +17,9 @@ export function PrayerTimesBar() {
   const longitude = useSettingsStore((s) => s.azanLongitude);
   const method = useSettingsStore((s) => s.azanCalculationMethod);
 
-  const now = useNow(1000);
+  // Display resolves to minutes, so a 30s tick is indistinguishable from 1s
+  // while cutting 30 renders (and prayer-time recomputes) to one.
+  const now = useNow(30_000);
 
   if (!enabled) return null;
 

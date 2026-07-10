@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { Dayjs } from 'dayjs';
+import { useSettingsStore } from '../../store/settingsStore';
 
 const DIGITS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] as const;
 const AP = ['A', 'P'] as const;
@@ -80,6 +81,11 @@ interface FlipClockProps {
 }
 
 export function FlipClock({ date, showSeconds = true, className = '', style }: FlipClockProps) {
+  // Seconds mean two 3D flip animations every second in every clock on
+  // screen — the single biggest constant animation load, so low power
+  // mode drops them.
+  const lowPowerMode = useSettingsStore((s) => s.lowPowerMode);
+  const secondsVisible = showSeconds && !lowPowerMode;
   const hh = date.format('hh');
   const mm = date.format('mm');
   const ss = date.format('ss');
@@ -96,7 +102,7 @@ export function FlipClock({ date, showSeconds = true, className = '', style }: F
         <FlipDigit target={mm[0]} charset={DIGITS} />
         <FlipDigit target={mm[1]} charset={DIGITS} />
       </span>
-      {showSeconds && (
+      {secondsVisible && (
         <>
           <Colon />
           <span className="flip-clock__group flip-clock__seconds">

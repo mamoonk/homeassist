@@ -711,3 +711,34 @@ html[data-theme='gamified'] .text-amber-500 {
     animation: none !important;
   }
 }
+
+/* ===== Low power mode ===== */
+/* Backdrop blur re-samples the backdrop on every animation frame; on machines
+   without GPU acceleration it rasterizes on the CPU. Kill it everywhere. */
+html[data-low-power] .glass-panel {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Stop every infinite decorative animation (each keeps the compositor
+   producing frames 24/7). One-shot transitions and the flip animation on
+   actual digit changes are kept. */
+html[data-low-power] .anim-float,
+html[data-low-power] .anim-cloud-front,
+html[data-low-power] .anim-cloud-back,
+html[data-low-power] .anim-sun,
+html[data-low-power] .anim-bubble,
+html[data-low-power] .anim-blink,
+html[data-low-power] .anim-drop,
+html[data-low-power] .anim-twinkle,
+html[data-low-power] .anim-bolt,
+html[data-low-power] .cloud-bank,
+html[data-low-power] .wind-streak,
+html[data-low-power] .lightning-flash,
+html[data-low-power] .map-ping-ring,
+html[data-low-power] .fog-layer,
+html[data-low-power] .rain-streak,
+html[data-low-power] .snow-flake,
+html[data-low-power] .flip-colon > i {
+  animation: none !important;
+}

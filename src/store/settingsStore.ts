@@ -14,6 +14,7 @@ const DEFAULT_SETTINGS: GlossSettings = {
   glassOpacity: 0.5,
   glassBlur: 8,
   contentBlur: 0,
+  lowPowerMode: false,
 
   smartMirrorEnabled: false,
   smartMirrorDeviceId: '',

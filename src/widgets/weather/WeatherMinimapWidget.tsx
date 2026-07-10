@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useSettingsStore } from '../../store/settingsStore';
 import { useWeatherContext } from '../../hooks/WeatherContext';
 import { WidgetCard } from '../../components/grid/WidgetCard';
 import dayjs from '../../services/dayjsSetup';
@@ -36,7 +37,10 @@ export function WeatherMinimapWidget() {
       .then((d) => {
         if (!alive) return;
         setRadarHost(d.host);
-        setFrames([...(d.radar?.past ?? []).slice(-8), ...(d.radar?.nowcast ?? [])]);
+        const past = (d.radar?.past ?? []).slice(-8);
+        setFrames([...past, ...(d.radar?.nowcast ?? [])]);
+        // Most recent real observation; where the static low-power view sits.
+        setFrameIdx(Math.max(0, past.length - 1));
       })
       .catch(() => {});
     return () => {
@@ -44,12 +48,15 @@ export function WeatherMinimapWidget() {
     };
   }, []);
 
-  // Cycle radar frames to animate precipitation movement.
+  // Cycle radar frames to animate precipitation movement. In low power mode
+  // the newest frame is shown statically instead of re-rendering tiles at
+  // 750ms forever.
+  const lowPowerMode = useSettingsStore((s) => s.lowPowerMode);
   useEffect(() => {
-    if (frames.length < 2) return;
+    if (frames.length < 2 || lowPowerMode) return;
     const t = window.setInterval(() => setFrameIdx((i) => (i + 1) % frames.length), 750);
     return () => window.clearInterval(t);
-  }, [frames.length]);
+  }, [frames.length, lowPowerMode]);
 
   const lat = weather?.latitude;
   const lon = weather?.longitude;
