@@ -428,9 +428,14 @@ html[data-theme='gamified'] .text-amber-500 {
   width: 0.11em;
   height: 0.11em;
   border-radius: 9999px;
-  background: #f59e0b;
-  box-shadow: 0 0 0.25em rgba(245, 158, 11, 0.8);
+  background: #ffffff;
+  box-shadow: 0 0 0.25em rgba(255, 255, 255, 0.8);
   animation: flip-colon-pulse 1s ease-in-out infinite;
+}
+
+/* White dots need a dark halo to stay visible on light panels. */
+html[data-theme='light'] .flip-colon > i {
+  box-shadow: 0 0 0.25em rgba(255, 255, 255, 0.9), 0 0 2px 1px rgba(15, 23, 42, 0.45);
 }
 @keyframes flip-colon-pulse {
   0%,
@@ -461,10 +466,6 @@ html[data-theme='gamified'] .text-amber-500 {
 [data-theme='gamified'] .flip-half--bottom,
 [data-theme='gamified'] .flip-face--back {
   background: linear-gradient(180deg, #1d1640 0%, #120c2e 100%);
-}
-[data-theme='gamified'] .flip-colon > i {
-  background: #22d3ee;
-  box-shadow: 0 0 0.25em rgba(34, 211, 238, 0.8);
 }
 [data-theme='gamified'] .flip-clock-glow {
   background: radial-gradient(ellipse at center, rgba(34, 211, 238, 0.2), transparent 70%);
