@@ -54,6 +54,9 @@ export function WidgetGrid({ tabKey, itemIds, onRemove, initialLayout }: WidgetG
           containerPadding={[12, 12]}
           layouts={layouts as unknown as ResponsiveLayouts<BreakpointKey>}
           onLayoutChange={handleLayoutChange}
+          // Interactive elements inside widgets must receive clicks instead
+          // of starting a grid drag (news tabs, headline links, etc.).
+          dragConfig={{ cancel: 'button, a, input, select, textarea' }}
         >
           {itemIds.map((id) => {
             const widget = resolveWidget(id);
