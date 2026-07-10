@@ -81,6 +81,8 @@ export async function fetchWeather(
       'temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,cloud_cover,pressure_msl,wind_speed_10m,wind_direction_10m,visibility,uv_index,is_day',
     hourly: 'temperature_2m,apparent_temperature,precipitation_probability,precipitation',
     daily: 'weather_code,temperature_2m_max,temperature_2m_min',
+    // The forecast widget's longest tab; Open-Meteo allows up to 16.
+    forecast_days: '14',
     timezone: 'auto',
     temperature_unit: unit,
     wind_speed_unit: 'mph',
