@@ -18,6 +18,7 @@ export function AzanSection() {
   const azanCalculationMethod = useSettingsStore((s) => s.azanCalculationMethod);
   const azanVolume = useSettingsStore((s) => s.azanVolume);
   const azanByPrayer = useSettingsStore((s) => s.azanByPrayer);
+  const azanKaabaScale = useSettingsStore((s) => s.azanKaabaScale);
   const update = useSettingsStore((s) => s.update);
 
   const prayers = getFivePrayers(getPrayerTimes(azanLatitude, azanLongitude, new Date(), azanCalculationMethod));
@@ -80,6 +81,19 @@ export function AzanSection() {
           max={5}
           step={0.1}
           onChange={(v) => update({ prayerTimesScale: v })}
+          format={(v) => `${v.toFixed(1)}×`}
+        />
+      </Field>
+      <Field
+        label={`Kaaba size during azan (${azanKaabaScale.toFixed(1)}×)`}
+        hint="Scales the rotating 3D Kaaba shown in the Clock widget while the azan plays."
+      >
+        <Slider
+          value={azanKaabaScale}
+          min={0.5}
+          max={2.5}
+          step={0.1}
+          onChange={(v) => update({ azanKaabaScale: v })}
           format={(v) => `${v.toFixed(1)}×`}
         />
       </Field>

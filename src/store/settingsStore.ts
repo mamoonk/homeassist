@@ -72,6 +72,7 @@ const DEFAULT_SETTINGS: GlossSettings = {
   azanCalculationMethod: 'MuslimWorldLeague',
   azanVolume: 0.8,
   azanChoice: 1,
+  azanKaabaScale: 1,
   azanByPrayer: { Fajr: 1, Dhuhr: 1, Asr: 1, Maghrib: 1, Isha: 1 },
 
   healthShowOnDashboard: false,

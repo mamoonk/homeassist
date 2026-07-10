@@ -229,6 +229,8 @@ export interface GlossSettings {
   azanCalculationMethod: CalculationMethodName;
   azanVolume: number;
   azanChoice: 1 | 2 | 3 | 4 | 5;
+  /** Size multiplier for the rotating Kaaba shown in the Clock widget during azan. */
+  azanKaabaScale: number;
   azanByPrayer: Record<PrayerName, 1 | 2 | 3 | 4 | 5>;
 
   healthShowOnDashboard: boolean;

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { useSettingsStore } from '../../store/settingsStore';
 
 const MODEL_URL = '/kaaba.gltf';
 
@@ -8,6 +9,11 @@ const MODEL_URL = '/kaaba.gltf';
 // plays. Owns its own three.js renderer; everything is disposed on unmount.
 export function KaabaModel() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const scale = useSettingsStore((s) => s.azanKaabaScale);
+  // Read by the animation loop each frame so slider changes apply live
+  // without tearing down the renderer.
+  const scaleRef = useRef(scale);
+  scaleRef.current = scale;
 
   useEffect(() => {
     const container = containerRef.current;
@@ -69,6 +75,7 @@ export function KaabaModel() {
 
     renderer.setAnimationLoop(() => {
       pivot.rotation.y += 0.006;
+      pivot.scale.setScalar(scaleRef.current);
       renderer.render(scene, camera);
     });
 
