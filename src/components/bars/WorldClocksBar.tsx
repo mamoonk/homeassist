@@ -36,6 +36,17 @@ export function WorldClocksBar() {
         const label = zoneLabel(zoneId, cityDetails);
         const location = cityDetails[zoneId] ?? TIMEZONE_LOCATIONS[zoneId];
         const zonedNow = dayjs(now).tz(zoneId);
+        // AnalogClockFace reads local getHours(), and .toDate() would return
+        // the same absolute instant for every zone — rebuild a Date carrying
+        // the zone's wall-clock time instead.
+        const zonedWallClock = new Date(
+          zonedNow.year(),
+          zonedNow.month(),
+          zonedNow.date(),
+          zonedNow.hour(),
+          zonedNow.minute(),
+          zonedNow.second(),
+        );
         const isSelected = override?.zoneId === zoneId;
 
         return (
@@ -58,7 +69,7 @@ export function WorldClocksBar() {
             {displayType === 'analog' ? (
               <div className="flex flex-col items-center">
                 <AnalogClockFace
-                  date={zonedNow.toDate()}
+                  date={zonedWallClock}
                   showHourNumbers={showHourNumbers}
                   dialStyle={dialStyle}
                   style={{ height: `${3.5 * analogDialScale}em`, width: `${3.5 * analogDialScale}em` }}
